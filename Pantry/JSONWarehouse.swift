@@ -153,13 +153,13 @@ open class JSONWarehouse: Warehouseable, WarehouseCacheable {
 
         if let data = try? Data(contentsOf: cacheLocation),
             let metaDictionary = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let cache = metaDictionary?["storage"] {
+            let cache = metaDictionary["storage"] {
             return cache
         }
 
         if let data = try? Data(contentsOf: cacheLocation),
         let metaDictionary = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let cache = metaDictionary?["storage"] {
+            let cache = metaDictionary["storage"] {
             return cache
         }
 
@@ -173,7 +173,7 @@ open class JSONWarehouse: Warehouseable, WarehouseCacheable {
                 return false
         }
 
-        guard let expires = metaDictionary?["expires"] as? TimeInterval else {
+        guard let expires = metaDictionary["expires"] as? TimeInterval else {
             // no expire time means old cache, never expires
             return true
         }

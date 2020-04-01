@@ -108,7 +108,7 @@ open class JSONWarehouse: Warehouseable, WarehouseCacheable {
     }
 
     func write(_ object: Any, expires: StorageExpiry) {
-        let cacheLocation = cacheFileURL()
+        var cacheLocation = cacheFileURL()
         var storableDictionary: [String: Any] = [:]
         
         storableDictionary["expires"] = expires.toDate().timeIntervalSince1970
@@ -123,6 +123,11 @@ open class JSONWarehouse: Warehouseable, WarehouseCacheable {
             let data = try JSONSerialization.data(withJSONObject: storableDictionary, options: .prettyPrinted)
 
             try data.write(to: cacheLocation, options: .atomic)
+            
+            // Prevent iCloud back-up for written cache file
+            var rv = URLResourceValues();
+            rv.isExcludedFromBackup = true;
+            try cacheLocation.setResourceValues(rv);
         } catch {
             debugPrint("\(error)")
         }
